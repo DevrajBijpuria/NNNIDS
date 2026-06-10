@@ -1,0 +1,297 @@
+@import "tailwindcss";
+
+/* ─── Design tokens ─────────────────────────────────────────────────── */
+@theme {
+  --color-bg-deep: #03060f;
+  --color-bg-card: #080d1a;
+  --color-bg-panel: #0b1120;
+  --color-border: #1a2540;
+  --color-border-glow: #1e3a6e;
+  --color-text: #c8d8f0;
+  --color-muted: #4a6080;
+  --color-accent: #1d6ef5;
+  --color-critical: #ff3b30;
+  --color-high: #ff9500;
+  --color-medium: #ffd60a;
+  --color-low: #30d158;
+  --color-info: #64acff;
+}
+
+/* ─── Base ──────────────────────────────────────────────────────────── */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: 'JetBrains Mono', 'Courier New', monospace;
+  background-color: #03060f;
+  color: #c8d8f0;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+
+code,
+.mono {
+  font-family: 'JetBrains Mono', 'Courier New', monospace;
+}
+
+/* scrollbar */
+::-webkit-scrollbar {
+  width: 4px;
+  height: 4px;
+}
+
+::-webkit-scrollbar-track {
+  background: #080d1a;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #1a2540;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #1d6ef5;
+}
+
+/* ─── Grid scan animation ────────────────────────────────────────────── */
+.bg-grid {
+  background-image:
+    linear-gradient(rgba(29, 110, 245, 0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(29, 110, 245, 0.04) 1px, transparent 1px);
+  background-size: 40px 40px;
+}
+
+/* ─── Card primitives ───────────────────────────────────────────────── */
+.panel {
+  background: #080d1a;
+  border: 1px solid #1a2540;
+  border-radius: 12px;
+  padding: 20px;
+  position: relative;
+  overflow: hidden;
+  transition: border-color 0.2s;
+}
+
+.panel:hover {
+  border-color: #1e3a6e;
+}
+
+.panel-glow::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 12px;
+  padding: 1px;
+  background: linear-gradient(135deg, rgba(29, 110, 245, 0.3), transparent 60%);
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
+}
+
+/* ─── Severity badges ───────────────────────────────────────────────── */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.badge-critical {
+  background: rgba(255, 59, 48, 0.15);
+  color: #ff6961;
+  border: 1px solid rgba(255, 59, 48, 0.35);
+}
+
+.badge-high {
+  background: rgba(255, 149, 0, 0.15);
+  color: #ffb340;
+  border: 1px solid rgba(255, 149, 0, 0.35);
+}
+
+.badge-medium {
+  background: rgba(255, 214, 10, 0.12);
+  color: #ffd60a;
+  border: 1px solid rgba(255, 214, 10, 0.3);
+}
+
+.badge-low {
+  background: rgba(48, 209, 88, 0.12);
+  color: #4cd964;
+  border: 1px solid rgba(48, 209, 88, 0.3);
+}
+
+.badge-ok {
+  background: rgba(100, 172, 255, 0.12);
+  color: #64acff;
+  border: 1px solid rgba(100, 172, 255, 0.3);
+}
+
+/* ─── Pulse ring ────────────────────────────────────────────────────── */
+@keyframes pulse-ring {
+  0% {
+    transform: scale(0.8);
+    opacity: 1;
+  }
+
+  100% {
+    transform: scale(2.2);
+    opacity: 0;
+  }
+}
+
+.pulse-ring {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.pulse-ring::before {
+  content: '';
+  position: absolute;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: currentColor;
+  animation: pulse-ring 1.4s ease-out infinite;
+  opacity: 0.6;
+}
+
+/* ─── Scan line animation ───────────────────────────────────────────── */
+@keyframes scan {
+  0% {
+    transform: translateY(-100%);
+  }
+
+  100% {
+    transform: translateY(400%);
+  }
+}
+
+.scan-line {
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, rgba(29, 110, 245, 0.6), transparent);
+  animation: scan 3s linear infinite;
+  pointer-events: none;
+}
+
+/* ─── Alert slide-in ────────────────────────────────────────────────── */
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateX(-10px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.alert-item {
+  animation: slideIn 0.3s ease;
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-8px) scale(0.98);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.animate-slide-in {
+  animation: slideDown 0.35s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+/* ─── Number counter ────────────────────────────────────────────────── */
+@keyframes countUp {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.count-up {
+  animation: countUp 0.4s ease;
+}
+
+/* IP chip */
+.ip-chip {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  padding: 2px 8px;
+  border-radius: 4px;
+  background: rgba(29, 110, 245, 0.1);
+  border: 1px solid rgba(29, 110, 245, 0.25);
+  color: #64acff;
+}
+
+/* Status dot */
+.dot-live {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #1d6ef5;
+  box-shadow: 0 0 6px #1d6ef5;
+}
+
+.dot-scanning {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #30d158;
+  box-shadow: 0 0 6px #30d158;
+  animation: ping 1s ease-in-out infinite;
+}
+
+.dot-idle {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #4a6080;
+}
+
+@keyframes ping {
+
+  0%,
+  100% {
+    box-shadow: 0 0 0 0 rgba(48, 209, 88, 0.6);
+  }
+
+  50% {
+    box-shadow: 0 0 0 6px rgba(48, 209, 88, 0);
+  }
+}
+
+/* Recharts overrides */
+.recharts-cartesian-grid-horizontal line,
+.recharts-cartesian-grid-vertical line {
+  stroke: #1a2540 !important;
+}
+
+.recharts-tooltip-wrapper {
+  filter: drop-shadow(0 4px 24px rgba(0, 0, 0, 0.8));
+}
